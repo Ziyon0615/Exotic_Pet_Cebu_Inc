@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('smily.jpg'); /* Update with the correct relative path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #status-container {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        #login-button {
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>Exotic Team Cebu Inc.</div>
+        <button type="button" onclick="init()">Start</button>
+        <br><br>
+        <div id="webcam-container"></div>
+        <div id="label-container"></div>
+        <div id="status-container"></div> <!-- Container for ACTIVE/INACTIVE status -->
+        <a id="login-button" href="Home.html">
+            <button>Login</button> <!-- Login button wrapped in an <a> tag -->
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script type="text/javascript">
+        const URL = "https://teachablemachine.withgoogle.com/models/jhWdEBDH1/";
+
+        let model, webcam, labelContainer, statusContainer, loginButton, maxPredictions;
+
+        async function init() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+
+            const flip = true;
+            webcam = new tmImage.Webcam(300, 300, flip);
+            await webcam.setup();
+            await webcam.play();
+            window.requestAnimationFrame(loop);
+
+            document.getElementById("webcam-container").appendChild(webcam.canvas);
+            labelContainer = document.getElementById("label-container");
+            statusContainer = document.getElementById("status-container");
+            loginButton = document.getElementById("login-button");
+            labelContainer.appendChild(document.createElement("div"));
+        }
+
+        async function loop() {
+            webcam.update();
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+
+        async function predict() {
+            const prediction = await model.predict(webcam.canvas);
+            
+            console.log(prediction); // Log predictions to the console for debugging
+
+            const highestPrediction = prediction.reduce((prev, current) => 
+                (prev.probability > current.probability) ? prev : current
+            );
+
+            const threshold = 0.3; // Lowered threshold to increase sensitivity
+            if (highestPrediction.probability > threshold) {
+                labelContainer.childNodes[0].innerHTML = 
+                    `${highestPrediction.className}: ${highestPrediction.probability.toFixed(2)}`;
+                
+                if (["MAILYN", "PHILIP", "SARAH"].includes(highestPrediction.className.toUpperCase())) {
+                    statusContainer.innerHTML = "ACTIVE";
+                    statusContainer.style.color = "green"; // Set text color to green for ACTIVE
+                    loginButton.style.display = "inline"; // Show login button
+                } else if (["UNKNOWN"].includes(highestPrediction.className.toUpperCase())) {
+                      statusContainer.innerHTML = "NOT MEMBER";
+                      statusContainer.style.color = "red"; // Set text color to red for INACTIVE
+                      loginButton.style.display = "none"; // Hide login button
+              } else {
+                         // Hide the status and login button for any other invalid predictions
+                      statusContainer.innerHTML = ""; 
+                     loginButton.style.display = "none"; 
+             }
+             } else {
+                     // Hide both label and status if the QR code is invalid
+                      labelContainer.childNodes[0].innerHTML = ""; 
+                      statusContainer.innerHTML = ""; // Hide the "INACTIVE" message when an invalid QR code is detected
+                      loginButton.style.display = "none"; // Hide login button
+                    }
+        }
+    </script>
+</body>
+</html>

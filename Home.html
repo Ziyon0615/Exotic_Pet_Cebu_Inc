@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #00bfae, #1e88e5); /* Gradient background */
+            color: #333;
+            text-align: center;
+        }
+        
+        header {
+            background: #fff;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 10px 20px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #00bfae; /* Change color on hover */
+        }
+        
+        .container {
+            padding: 20px;
+        }
+        
+        section {
+            padding: 40px 20px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        footer {
+            padding: 10px 0;
+            background: #fff;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#about-us">About Us</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#contact-us">Contact Us</a>
+            <a href="#partners">Partners</a>
+            <a href="#events">Events</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="about-us">
+            <h1>About Us</h1>
+            <p>Welcome to our organization. We are dedicated to providing the best services and making a positive impact in our community.</p>
+        </section>
+        
+        <section id="gallery">
+            <h1>Gallery</h1>
+            <div class="gallery">
+                <img src="https://via.placeholder.com/300x200" alt="Gallery Image 1">
+                <img src="https://via.placeholder.com/300x200" alt="Gallery Image 2">
+                <img src="https://via.placeholder.com/300x200" alt="Gallery Image 3">
+                <img src="https://via.placeholder.com/300x200" alt="Gallery Image 4">
+            </div>
+        </section>
+        
+        <section id="contact-us">
+            <h1>Contact Us</h1>
+            <p>If you have any questions, feel free to reach out to us via email at <a href="mailto:info@example.com">info@example.com</a>.</p>
+        </section>
+        
+        <section id="partners">
+            <h1>Partners</h1>
+            <p>We are proud to collaborate with our esteemed partners who help us achieve our mission.</p>
+        </section>
+        
+        <section id="events">
+            <h1>Events</h1>
+            <p>Check out our upcoming events and join us for exciting activities and opportunities to connect.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Exotic Team Cebu Inc. All rights reserved.</p>
+    </footer>
+</body>
+</html>
